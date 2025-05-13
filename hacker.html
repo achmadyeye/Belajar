@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>System Error</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: monospace;
+      text-align: center;
+      user-select: none;
+      transition: background-color 0.5s, color 0.5s;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    #popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: white;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-btn {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .warning {
+      font-size: 24px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    #emoji {
+      font-size: 80px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: moveLeftRight 2s infinite alternate ease-in-out;
+    }
+
+    @keyframes moveLeftRight {
+      from { transform: translateX(-20px); }
+      to { transform: translateX(20px); }
+    }
+
+    #output {
+      margin-top: 20px;
+      color: green;
+    }
+
+    #hidden-exit {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 100px;
+      height: 100px;
+      background-color: rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      z-index: 999;
+      cursor: not-allowed;
+    }
+
+    #alertText {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 30px;
+      color: red;
+      animation: blink 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div id="popup">
+    <h2>Mas Amba wants your data. Allow it?</h2>
+    <div>
+      <button class="popup-btn" onclick="closePopupAndStart()">Allow</button>
+      <button class="popup-btn" onclick="closePopupAndStart()">Deny</button>
+    </div>
+  </div>
+
+  <h1 class="warning">!!! SYSTEM MALFUNCTION !!!</h1>
+  <p><i>A***T corrupted your device</i></p>
+
+  <div id="output"></div>
+  <div id="emoji">🤓</div>
+  <div id="alertText">ERROR! SYSTEM FAILURE!</div>
+  <div id="hidden-exit" onclick="stopPrank()" title="Exit (secret)"></div>
+
+  <script>
+    let interval1, interval2, intervalColor, intervalEmoji, intervalText;
+    let isBlack = true;
+    const emoji = document.getElementById("emoji");
+
+    function closePopupAndStart() {
+      document.getElementById("popup").style.display = "none";
+      startPrank();
+    }
+
+    function startPrank() {
+      alert("WARNING: System anomaly detected.");
+
+      interval1 = setInterval(() => {
+        alert("CRITICAL ERROR: Data breach simulated.");
+      }, 8000);
+
+      let count = 0;
+      interval2 = setInterval(() => {
+        document.getElementById('output').innerHTML += 
+          `<p>A***T corrupted your device, file_${count}.bin ...</p>`;
+        count++;
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 600);
+
+      intervalColor = setInterval(() => {
+        isBlack = !isBlack;
+        document.body.style.backgroundColor = isBlack ? "black" : "white";
+        document.body.style.color = isBlack ? "white" : "black";
+      }, 1000);
+
+      intervalEmoji = setInterval(() => {
+        const randTop = Math.random() * (window.innerHeight - 100);
+        const randLeft = Math.random() * (window.innerWidth - 100);
+        emoji.style.top = randTop + "px";
+        emoji.style.left = randLeft + "px";
+      }, 700);
+
+      intervalText = setInterval(() => {
+        const alertText = document.getElementById("alertText");
+        alertText.innerText = Math.random() > 0.5 ? "ERROR! SYSTEM FAILURE!" : "CRITICAL SYSTEM MALFUNCTION!";
+      }, 1000);
+    }
+
+    function stopPrank() {
+      clearInterval(interval1);
+      clearInterval(interval2);
+      clearInterval(intervalColor);
+      clearInterval(intervalEmoji);
+      clearInterval(intervalText);
+      alert("Prank stopped.");
+      location.reload();
+    }
+  </script>
+</body>
+</html>
